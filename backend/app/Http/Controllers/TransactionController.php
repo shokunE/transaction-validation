@@ -18,7 +18,7 @@ class TransactionController extends Controller
 
         $transaction = $matcher->match($dto);
 
-        if (! $transaction) {
+        if (!$transaction) {
             return $this->errorResponse('No matching transaction found');
         }
 
