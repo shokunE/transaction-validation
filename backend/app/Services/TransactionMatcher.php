@@ -33,7 +33,7 @@ class TransactionMatcher
         }
 
         $transactionDTO = new TransactionDTO(
-            amount: (float)$transaction->amount,
+            amount: $transaction->amount,
             currency: $transaction->currency
         );
 

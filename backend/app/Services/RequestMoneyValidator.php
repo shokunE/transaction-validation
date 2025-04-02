@@ -41,8 +41,8 @@ class RequestMoneyValidator
             return false;
         }
 
-        $requested = $request->amount;
-        $actual = $transaction->amount;
+        $requested = round($request->amount, 2);
+        $actual = round($transaction->amount, 2);
 
         $deviation = abs($requested - $actual) / $requested * 100;
 
