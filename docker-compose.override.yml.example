@@ -1,0 +1,11 @@
+services:
+  nginx:
+    image: nginx:1.23.1-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx/development.conf:/etc/nginx/nginx.conf
+
+  db:
+    ports:
+      - "3306:3306"

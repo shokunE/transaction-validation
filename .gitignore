@@ -1,0 +1,7 @@
+/.fleet
+/.idea
+/.vscode
+docker-compose.override.yml
+docker/db/data/*
+docker/db/app-data/*
+!docker/db/app-data/.gitkeep
