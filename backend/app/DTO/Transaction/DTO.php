@@ -6,6 +6,6 @@ namespace App\DTO\Transaction;
 
 use Illuminate\Http\Request;
 
-class DTO
+abstract class DTO
 {
 }

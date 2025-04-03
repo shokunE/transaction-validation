@@ -6,23 +6,13 @@ namespace App\Services;
 
 use App\DTO\Transaction\RequestMoneyDTO;
 use App\DTO\Transaction\TransactionDTO;
-use InvalidArgumentException;
 
 class RequestMoneyValidator
 {
+    private const SCALE = 8;
+
     public function __construct(protected ?float $deviationPercent = null)
     {
-        if (is_null($this->deviationPercent)) {
-            $this->deviationPercent = (float) config('services.request_money_validator.deviation_percent');
-        }
-
-        if (is_null($this->deviationPercent)) {
-            throw new InvalidArgumentException('Deviation percent must be set');
-        }
-
-        if ($this->deviationPercent < 0) {
-            throw new InvalidArgumentException('Deviation percent must be a positive number');
-        }
     }
 
     public function getDeviation(): float
@@ -41,11 +31,18 @@ class RequestMoneyValidator
             return false;
         }
 
-        $requested = round($request->amount, 2);
-        $actual = round($transaction->amount, 2);
+        $requested = MoneyConverter::toString($request->amount);
+        $actual = MoneyConverter::toString($transaction->amount);
 
-        $deviation = abs($requested - $actual) / $requested * 100;
+        $diff = bcsub($requested, $actual, self::SCALE);
 
-        return $deviation <= $this->deviationPercent;
+        $absDiff = bccomp($diff, '0', self::SCALE) < 0
+            ? bcmul($diff, '-1', self::SCALE)
+            : $diff;
+
+        // Calculate the percentage deviation
+        $deviationPercent = bcdiv(bcmul($absDiff, '100', self::SCALE), $requested, self::SCALE);
+
+        return bccomp($deviationPercent, (string) $this->deviationPercent, self::SCALE) <= 0;
     }
 }
