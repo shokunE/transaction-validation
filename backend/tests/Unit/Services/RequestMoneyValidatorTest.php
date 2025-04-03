@@ -6,7 +6,7 @@ use App\DTO\Transaction\RequestMoneyDTO;
 use App\DTO\Transaction\TransactionDTO;
 use App\Services\RequestMoneyValidator;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
 
 class RequestMoneyValidatorTest extends TestCase
 {
