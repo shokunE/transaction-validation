@@ -19,8 +19,8 @@ class TransactionMatcher
 
     public function match(RequestMoneyDTO $dto): ?Transaction
     {
-        $min = number_format($dto->amount * (1 - $this->validator->getDeviation() / 100), 2, '.', '');
-        $max = number_format($dto->amount * (1 + $this->validator->getDeviation() / 100), 2, '.', '');
+        $min = MoneyConverter::toString($dto->amount * (1 - $this->validator->getDeviation() / 100));
+        $max = MoneyConverter::toString($dto->amount * (1 + $this->validator->getDeviation() / 100));
 
         $transaction = Transaction::query()
             ->where('currency', $dto->currency)
